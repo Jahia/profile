@@ -164,17 +164,17 @@
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_skypeID"/>
         :</span>&nbsp;${fields['j:skypeID']}
-                    <c:if test="${not empty fields['j:skypeID']}"> <a href="skype:${fields['j:skypeID']}?call"><img
+                    <c:if test="${not empty fields['j:skypeID']}"> <a href="skype:${fn:escapeXml(fields['j:skypeID'])}?call"><img
                             src="http://download.skype.com/share/skypebuttons/buttons/call_green_transparent_70x23.png"
-                            style="border: none;" width="70" height="23" alt="${fields['j:skypeID']}"/></a> </c:if>
+                            style="border: none;" width="70" height="23" alt="${fn:escapeXml(fields['j:skypeID'])}"/></a> </c:if>
                 </p>
             </c:if>
             <c:if test="${currentNode.properties['j:twitterID'].boolean and fn:contains(publicPropertiesAsString, 'j:twitterID')}">
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_twitterID"/>
         :</span>&nbsp;${fields['j:twitterID']}
-                    <c:if test="${not empty fields['j:twitterID']}"> <a href="http://twitter.com/${fields['j:twitterID']}" target="_blank"><img
-                            src="http://twitbuttons.com/buttons/siahdesign/twit1.gif" alt="${fields['j:twitterID']}"
+                    <c:if test="${not empty fields['j:twitterID']}"> <a href="http://twitter.com/${fn:escapeXml(fields['j:twitterID'])}" target="_blank"><img
+                            src="http://twitbuttons.com/buttons/siahdesign/twit1.gif" alt="${fn:escapeXml(fields['j:twitterID'])}"
                             width="144" height="30"/></a> </c:if>
                 </p>
             </c:if>
@@ -182,7 +182,7 @@
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_linkedinID"/>
         :</span>&nbsp;<a
-                        href="http://www.linkedin.com/in/{fields['j:linkedinID']}">${fields['j:linkedinID']}</a></p>
+                        href="http://www.linkedin.com/in/${fn:escapeXml(fields['j:linkedinID'])}">${fn:escapeXml(fields['j:linkedinID'])}</a></p>
             </c:if>
         </div>
         <c:if test="${currentNode.properties['j:about'].boolean and fn:contains(publicPropertiesAsString, 'j:about')}">
