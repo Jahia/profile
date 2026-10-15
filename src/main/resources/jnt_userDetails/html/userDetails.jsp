@@ -173,7 +173,7 @@
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_twitterID"/>
         :</span>&nbsp;${fields['j:twitterID']}
-                    <c:if test="${not empty fields['j:twitterID']}"> <a href="https://twitter.com/${fn:escapeXml(fields['j:twitterID'])}" target="_blank"><img
+                    <c:if test="${not empty fields['j:twitterID']}"> <a href="https://x.com/${fn:escapeXml(fields['j:twitterID'])}" target="_blank"><img
                             src="https://twitbuttons.com/buttons/siahdesign/twit1.gif" alt="${fn:escapeXml(fields['j:twitterID'])}"
                             width="144" height="30"/></a> </c:if>
                 </p>
