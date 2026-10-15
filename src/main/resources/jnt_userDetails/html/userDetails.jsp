@@ -158,12 +158,12 @@
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_email"/>
         :</span>&nbsp;<a
-                        href="mailto:${fields['j:email']}">${fields['j:email']}</a></p>
+                        href="mailto:${fn:escapeXml(fields['j:email'])}">${fn:escapeXml(fields['j:email'])}</a></p>
             </c:if>
             <c:if test="${currentNode.properties['j:skypeID'].boolean and fn:contains(publicPropertiesAsString, 'j:skypeID')}">
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_skypeID"/>
-        :</span>&nbsp;${fields['j:skypeID']}
+        :</span>&nbsp;${fn:escapeXml(fields['j:skypeID'])}
                     <c:if test="${not empty fields['j:skypeID']}"> <a href="skype:${fn:escapeXml(fields['j:skypeID'])}?call"><img
                             src="https://download.skype.com/share/skypebuttons/buttons/call_green_transparent_70x23.png"
                             style="border: none;" width="70" height="23" alt="${fn:escapeXml(fields['j:skypeID'])}"/></a> </c:if>
@@ -172,7 +172,7 @@
             <c:if test="${currentNode.properties['j:twitterID'].boolean and fn:contains(publicPropertiesAsString, 'j:twitterID')}">
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_twitterID"/>
-        :</span>&nbsp;${fields['j:twitterID']}
+        :</span>&nbsp;${fn:escapeXml(fields['j:twitterID'])}
                     <c:if test="${not empty fields['j:twitterID']}"> <a href="https://x.com/${fn:escapeXml(fields['j:twitterID'])}" target="_blank"><img
                             src="https://twitbuttons.com/buttons/siahdesign/twit1.gif" alt="${fn:escapeXml(fields['j:twitterID'])}"
                             width="144" height="30"/></a> </c:if>
@@ -190,7 +190,7 @@
                 <h5>
                     <fmt:message key="label.aboutMe"/>
                 </h5>
-                <p>${fields['j:about']}</p>
+                <p>${fn:escapeXml(functions:removeHtmlTags(fields['j:about']))}</p>
             </div>
         </c:if>
     </div>
@@ -201,7 +201,10 @@
         <c:set var="jsite" value="${renderContext.site.identifier}"/>
     </c:if>
     <c:set var="editUserView" value="${!empty currentNode.properties['j:editProfileView'] ? currentNode.properties['j:editProfileView'].string : 'user-edit-details'}"/>
-<div class="divButtonRight"><a class="aButton" href="<c:url value='${url.base}${user.path}.${editUserView}.html?jsite=${jsite}'/>"><span><fmt:message key="label.editProfile"/></span></a></div>
+    <c:url var="editProfileUrl" value="${url.base}${user.path}.${editUserView}.html">
+        <c:param name="jsite" value="${jsite}"/>
+    </c:url>
+<div class="divButtonRight"><a class="aButton" href="${fn:escapeXml(editProfileUrl)}"><span><fmt:message key="label.editProfile"/></span></a></div>
 </c:if>
 
 
