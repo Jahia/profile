@@ -19,16 +19,20 @@
 <template:addResources type="css" resources="userProfile.css"/>
 <template:addCacheDependency node="${user}"/>
 <jcr:nodeProperty node="${user}" name="j:publicProperties" var="publicProperties" />
-<c:set var="publicPropertiesAsString" value=""/>
+<%-- Exact membership: 'age' and the j:* names below are matched as whole entries of the list, not
+     as substrings of its concatenation, so a longer property name containing one cannot turn it on. --%>
+<jsp:useBean id="isPublic" class="java.util.HashMap"/>
 <c:forEach items="${publicProperties}" var="value">
-    <c:set var="publicPropertiesAsString" value="${value.string} ${publicPropertiesAsString}"/>
+    <c:if test="${not empty value.string}">
+        <c:set target="${isPublic}" property="${value.string}" value="true"/>
+    </c:if>
 </c:forEach>
-<c:if test="${empty publicPropertiesAsString}">
+<c:if test="${empty publicProperties}">
     <fmt:message key="label.noPublicProperty">
         <fmt:param value="${user.name}"/>
     </fmt:message>
 </c:if>
-<c:if test="${!empty publicPropertiesAsString}">
+<c:if test="${not empty publicProperties}">
     <jsp:useBean id="fields" class="java.util.HashMap"/>
     <c:set var="fields" value="${user.propertiesAsString}"/>
 
@@ -66,7 +70,7 @@
     <div class="user-profile">
         <c:if test="${currentNode.properties['j:picture'].boolean}">
         <c:choose>
-            <c:when test="${fn:contains(publicPropertiesAsString, 'j:picture')}">
+            <c:when test="${not empty isPublic['j:picture']}">
                 <div class="user-photo">
                 <jcr:nodeProperty var="picture" node="${user}" name="j:picture"/>
                 <c:if test="${not empty picture}">
@@ -91,12 +95,12 @@
         <div class="user-body">
             <h3><c:if test="${not empty fn:trim(person)}">${fn:escapeXml(person)}&nbsp;</c:if></h3>
             <p class="small colorlight">
-                <c:if test="${fn:contains(publicPropertiesAsString, 'j:birthDate')}">
+                <c:if test="${not empty isPublic['j:birthDate']}">
                     <c:if test="${not empty birthDate}">
                         <fmt:formatDate value="${birthDate.date.time}" dateStyle="full" type="date"/>
                     </c:if>
                     &nbsp;</c:if>
-                <c:if test="${fn:contains(publicPropertiesAsString, 'age')}">
+                <c:if test="${not empty isPublic['age']}">
                     <c:if test="${not empty birthDate}"> <span class="label">
           <fmt:message key="jnt_user.age"/>
           :&nbsp;</span>
@@ -106,61 +110,61 @@
                     </c:if>
                     &nbsp;</c:if>
             </p>
-            <c:if test="${currentNode.properties['j:organization'].boolean and fn:contains(publicPropertiesAsString, 'j:organization')}">
+            <c:if test="${currentNode.properties['j:organization'].boolean and not empty isPublic['j:organization']}">
                 <p><span class="user-label">
         <fmt:message
                 key="jnt_user.j_organization"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:organization'])}</p>
             </c:if>
-            <c:if test="${currentNode.properties['j:function'].boolean and fn:contains(publicPropertiesAsString, 'j:function')}">
+            <c:if test="${currentNode.properties['j:function'].boolean and not empty isPublic['j:function']}">
                 <p><span class="user-label">
         <fmt:message
                 key="jnt_user.j_function"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:function'])}</p>
             </c:if>
-            <c:if test="${currentNode.properties['j:address'].boolean and fn:contains(publicPropertiesAsString, 'j:address')}">
+            <c:if test="${currentNode.properties['j:address'].boolean and not empty isPublic['j:address']}">
                 <p><span class="user-label">
         <fmt:message
                 key="jnt_user.j_address"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:address'])}</p>
             </c:if>
-            <c:if test="${currentNode.properties['j:zipCode'].boolean and fn:contains(publicPropertiesAsString, 'j:zipCode')}">
+            <c:if test="${currentNode.properties['j:zipCode'].boolean and not empty isPublic['j:zipCode']}">
                 <p><span class="user-label">
         <fmt:message
                 key="jnt_user.j_zipCode"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:zipCode'])}</p>
             </c:if>
-            <c:if test="${currentNode.properties['j:city'].boolean and fn:contains(publicPropertiesAsString, 'j:city')}">
+            <c:if test="${currentNode.properties['j:city'].boolean and not empty isPublic['j:city']}">
                 <p><span class="user-label">
         <fmt:message
                 key="jnt_user.j_city"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:city'])}</p>
             </c:if>
-            <c:if test="${currentNode.properties['j:country'].boolean and fn:contains(publicPropertiesAsString, 'j:country')}">
+            <c:if test="${currentNode.properties['j:country'].boolean and not empty isPublic['j:country']}">
                 <p><span class="user-label">
         <fmt:message
                 key="jnt_user.j_country"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:country'])}</p>
             </c:if>
-            <c:if test="${currentNode.properties['j:phoneNumber'].boolean and fn:contains(publicPropertiesAsString, 'j:phoneNumber')}">
+            <c:if test="${currentNode.properties['j:phoneNumber'].boolean and not empty isPublic['j:phoneNumber']}">
                 <p><span class="user-label">
         <fmt:message
                 key="jnt_user.j_phoneNumber"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:phoneNumber'])}</p>
             </c:if>
-            <c:if test="${currentNode.properties['j:mobileNumber'].boolean and fn:contains(publicPropertiesAsString, 'j:mobileNumber')}">
+            <c:if test="${currentNode.properties['j:mobileNumber'].boolean and not empty isPublic['j:mobileNumber']}">
                 <p><span class="user-label">
         <fmt:message
                 key="jnt_user.j_mobileNumber"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:mobileNumber'])}</p>
             </c:if>
-            <c:if test="${currentNode.properties['j:email'].boolean and fn:contains(publicPropertiesAsString, 'j:email')}">
+            <c:if test="${currentNode.properties['j:email'].boolean and not empty isPublic['j:email']}">
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_email"/>
         :</span>&nbsp;<a
                         href="mailto:${fn:escapeXml(fields['j:email'])}">${fn:escapeXml(fields['j:email'])}</a></p>
             </c:if>
-            <c:if test="${currentNode.properties['j:skypeID'].boolean and fn:contains(publicPropertiesAsString, 'j:skypeID')}">
+            <c:if test="${currentNode.properties['j:skypeID'].boolean and not empty isPublic['j:skypeID']}">
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_skypeID"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:skypeID'])}
@@ -169,7 +173,7 @@
                             style="border: none;" width="70" height="23" alt="${fn:escapeXml(fields['j:skypeID'])}"/></a> </c:if>
                 </p>
             </c:if>
-            <c:if test="${currentNode.properties['j:twitterID'].boolean and fn:contains(publicPropertiesAsString, 'j:twitterID')}">
+            <c:if test="${currentNode.properties['j:twitterID'].boolean and not empty isPublic['j:twitterID']}">
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_twitterID"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:twitterID'])}
@@ -178,14 +182,14 @@
                             width="144" height="30"/></a> </c:if>
                 </p>
             </c:if>
-            <c:if test="${currentNode.properties['j:linkedinID'].boolean and fn:contains(publicPropertiesAsString, 'j:linkedinID')}">
+            <c:if test="${currentNode.properties['j:linkedinID'].boolean and not empty isPublic['j:linkedinID']}">
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_linkedinID"/>
         :</span>&nbsp;<a
                         href="https://www.linkedin.com/in/${fn:escapeXml(fields['j:linkedinID'])}">${fn:escapeXml(fields['j:linkedinID'])}</a></p>
             </c:if>
         </div>
-        <c:if test="${currentNode.properties['j:about'].boolean and fn:contains(publicPropertiesAsString, 'j:about')}">
+        <c:if test="${currentNode.properties['j:about'].boolean and not empty isPublic['j:about']}">
             <div class="aboutMe" >
                 <h5>
                     <fmt:message key="label.aboutMe"/>
