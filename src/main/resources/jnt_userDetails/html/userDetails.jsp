@@ -164,19 +164,13 @@
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_skypeID"/>
         :</span>&nbsp;${fn:escapeXml(fields['j:skypeID'])}
-                    <c:if test="${not empty fields['j:skypeID']}"> <a href="skype:${fn:escapeXml(fields['j:skypeID'])}?call"><img
-                            src="https://download.skype.com/share/skypebuttons/buttons/call_green_transparent_70x23.png"
-                            style="border: none;" width="70" height="23" alt="${fn:escapeXml(fields['j:skypeID'])}"/></a> </c:if>
                 </p>
             </c:if>
             <c:if test="${currentNode.properties['j:twitterID'].boolean and fn:contains(publicPropertiesAsString, 'j:twitterID')}">
                 <p><span class="user-label">
         <fmt:message key="jnt_user.j_twitterID"/>
-        :</span>&nbsp;${fn:escapeXml(fields['j:twitterID'])}
-                    <c:if test="${not empty fields['j:twitterID']}"> <a href="https://x.com/${fn:escapeXml(fields['j:twitterID'])}" target="_blank"><img
-                            src="https://twitbuttons.com/buttons/siahdesign/twit1.gif" alt="${fn:escapeXml(fields['j:twitterID'])}"
-                            width="144" height="30"/></a> </c:if>
-                </p>
+        :</span>&nbsp;<a
+                        href="https://x.com/${fn:escapeXml(fields['j:twitterID'])}" target="_blank" rel="noopener noreferrer">${fn:escapeXml(fields['j:twitterID'])}</a></p>
             </c:if>
             <c:if test="${currentNode.properties['j:linkedinID'].boolean and fn:contains(publicPropertiesAsString, 'j:linkedinID')}">
                 <p><span class="user-label">
