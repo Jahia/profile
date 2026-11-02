@@ -25,7 +25,7 @@
 </c:forEach>
 <c:if test="${empty publicPropertiesAsString}">
     <fmt:message key="label.noPublicProperty">
-        <fmt:param value="${user.name}"/>
+        <fmt:param value="${fn:escapeXml(user.name)}"/>
     </fmt:message>
 </c:if>
 <c:if test="${!empty publicPropertiesAsString}">
